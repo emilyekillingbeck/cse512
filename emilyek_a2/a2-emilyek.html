@@ -1,0 +1,240 @@
+<!DOCTYPE HTML>
+<html xml:lang="en" lang="en">
+<head>
+  <title>CSE512 Assignment 2</title>
+  <style>
+* { padding: 0; margin: 0; }
+
+body {
+  margin: 0 auto 0 auto;
+  padding: 0;
+  background-color: #33333f;
+  width: 840px;
+  font-family: "Avenir", "Avenir Next", Helvetica Neue, Arial;
+  font-size: 0.95em;
+}
+
+a, a:visited { text-decoration: none; color: #7533f4; }
+a:hover { text-decoration: underline; color: #f4b014; }
+img, a.img, a:hover.img { border: none; }
+
+img {
+  max-width: 800px;
+}
+
+h1, h2, h3, h4, h5 {
+  color: #492a7c;
+  background-color: inherit;
+  font-weight: normal;
+  padding: 0 0 5px 0;
+  margin: 15px 0 0 0;
+  border: none;
+  clear: right;
+}
+h1 { font-size: 18pt; margin:  5px 0 10px 0; line-height: 28px; }
+h2 { font-size: 14pt; margin: 30px 0 15px 0; letter-spacing: 0.01em; border-bottom: 1px solid #ccc;  line-height: 20px;}
+h3 { font-size: 13pt; }
+h4 { font-size: 12pt; }
+h5 { font-size: 11pt; }
+p { margin: 0 0 10px 0; }
+hr { border: 0px; border-top: 1px solid #ccc; height: 0px; }
+ol { margin: 1em; }
+
+.content {
+  margin: 0;
+  padding: 15px 20px;
+  background-color: #ffffff;
+}
+
+.article {
+  line-height: 1.5em;
+}
+
+.entry  {
+  border-top: 1px solid #ddd;
+  padding-top: 2px;
+  margin-top: 3em;
+}
+  </style>
+</head>
+
+<body>
+<div class='content'>
+
+<section>
+  <h1>Assignment 2: Exploratory Data Analysis</h1>
+
+  <p>
+    <strong>Emily Killingbeck</strong> &mdash;
+    <em>emilyek@uw.edu</em>
+  </p>
+</section>
+
+<section>
+  <h2>Dataset: Seattle building permits (1998 - 2019)</h2>
+
+  <p>
+    This dataset contains all building permits issued or in progress in the city of Seattle, starting with the year 1998. 
+    The data is provided by the Seattle Department of Construction and Inspections (SDCI), and as someone who would love to build 
+    a house one day, I thought this would be an interesting dataset to explore. 
+  </p>
+
+  <p>
+    The data is available online at:
+    <strong>
+      <a href="https://data.seattle.gov/Permitting/Building-Permits/76t5-zqzr">https://data.seattle.gov/Permitting/Building-Permits/76t5-zqzr</a>
+    </strong>
+  </p>
+</section>
+
+<section>
+  <h2>Initial Analysis Questions</h2>
+  <ol>
+    <li>Are there areas of Seattle where construction permits cluster?</li>
+    <li>What has the status of construction been since 2014, the year I moved to Seattle?</li>
+    <li>What is happening with construction in my neighborhood of Ballard, specifically?</li>
+    <li>As someone who hopes to build a house one day, how long can I expect the Seattle permit process to take?</li>
+    <li>What is the average cost of a construction project? Has this changed over time?</li>
+  </ol>
+</section>
+
+<section>
+  <h2>Discoveries &amp; Insights</h2>
+
+  I restricted the permit data to residential rather than non-residential, as my questions center around residential permits. 
+  It should be noted that a fairly significant number of fields in this dataset are "Null" and have been excluded from this 
+  analysis, perhaps indicative of less than stellar record keeping on Seattle's part? 
+
+  <div class="entry">
+    <img src="seattle_residential_permit_map.png" />
+    <p class="caption">
+    To orient myself, I first looked at a map of the location of all residential permits in the dataset. The density seems 
+    relatively uniform throughout, with perhaps more clustering in the Ballard, Fremont, South Lake Union, and Capitol Hill 
+    neighborhoods.
+    </p>
+  </div>
+
+  <div class="entry">
+    <img src="residential_permit_type.png" />
+    <p class="caption">
+      I next stratified the data by permit type, which is classified by roof, grading, demolition, or building. The majority of 
+      permits seem to be for demolition or building, with some grading throughout the city and comparatively few roof permits. 
+      Demolition seems especially frequent in my neighborhood of Ballard, something of which I was already aware!
+    </p>
+  </div>
+
+  <div class="entry">
+    <img src="residential_heatmap_post_2014.png" />
+    <p class="caption">
+    I was curious whether stratifying the data by year of permit issuance would reveal any structure in the data. I chose 2014 
+    because it was the year I moved to Seattle, and here the data is restricted to just building permits to the exclusion of 
+    roof, grading, or demolition. No obvious pattern is discernible -- it seems residential construction has been relatively 
+    uniform over these years.  
+    </p>
+  </div>
+
+  <div class="entry">
+    <img src="ballard_residential_permit_map.png" />
+    <p class="caption">
+    I love living in Ballard, so I was curious how the data looks in my neighborhood specifically. Here the map has been 
+    restricted to my zip code, 98107, and the frequency of demolition in Ballard is again apparent -- developers commonly buy up 
+    older single family homes in the neighborhood, replacing them with four tall townhouses on the same lot. 
+    </p>
+  </div>
+
+  <div class="entry">
+    <img src="ballard_residential_permit_map_post_2014.png" />
+    <p class="caption">
+    Limiting the data to 2014 and onward shows a similar trend for Ballard, possibly indicating that the majority of demolition 
+    in my neighborhood has been accomplished in these years. No grading has been done in 98107 since 2014, as this category 
+    disappears from the data and, consequently, the legend. 
+    </p>
+  </div>
+
+  <div class="entry">
+    <img src="application_duration_map.png" />
+    <p class="caption">
+    I next considered how long the construction process might take in Seattle, generating a metric for the period of time between the 
+    application date for the permit (defined as the date SDCI accepted the application as a complete submittal) and its completion 
+    date (defined as the date the permit had all its inspections completed). As can be seen from the map, this "application duration"
+    measure is dominated by a few very long construction projects, making the colors of this figure not very informative. When 
+    specifying the application duration measure, I chose to restrict the data to building and demolition permits since these 
+    would be the type of construction projects I'd consider for building my own home. 
+    </p>
+  </div>
+
+  <div class="entry">
+    <img src="application_duration_histogram.png" />
+    <p class="caption">
+    Turning away from the map view, I generated a histogram of the application duration data. This figure suggests that most 
+    residential building and demolition permits take around a year to go from application to completion, but a few much 
+    longer-running construction projects are obscured by the histogram view. The Gantt chart at the bottom helps to identify
+    these projects. 
+    </p>
+  </div>
+
+  <div class="entry">
+    <img src="application_duration_by_year.png" />
+    <p class="caption">
+    To look more closely at these long-running projects, I stratified the data by year. The spotty record keeping of the late 
+    1990s and early 2000s is apparent from the smaller amounts of data, and 2019 was excluded given that the data for the year is 
+    incomplete. I was curious whether the increasing availability of digital construction plans might streamline the permit process 
+    over time, and it does seem that application durations decrease as time goes on, with the exception of a few outliers.  
+    Note the impressive outlier from 2004 on the chart.  
+    </p>
+  </div>
+
+  <div class="entry">
+    <img src="housing_unit_histogram.png" />
+    <p class="caption">
+    The dataset also provides information on the number of housing units added or removed under a particular permit. Having watched 
+    the residential density of Ballard grow since moving to the neighborhood in 2014, I was curious whether this phenomenon 
+    applies more generally throughout Seattle. With the exception of a few very high density housing projects to the right tail
+    of the histogram, and a few significant housing unit losses to the left tail, the majority of permits do seem to
+    increase the overall residential density of the city, as measured by a net increase in housing units (defined as the number of 
+    housing units added minus the number of housing units removed).
+    </p>
+  </div>
+
+  <div class="entry">
+    <img src="housing_unit_histogram_zoom_in.png" />
+    <p class="caption">
+      To look at this phenomenon in finer detail, I limited the view to the data-dense part of the histogram. Most residential 
+      construction projects had no net change in housing units, representing demolition and addition/alteration permit types. 
+      The next largest category reflects mostly new construction, with one unit added and zero units removed.
+    </p>
+  </div>
+
+  <div class="entry">
+    <img src="residential_project_cost.png" />
+    <p class="caption">
+    Finally, I was curious about what I might expect the construction process to cost. I looked at the average of the estimated
+    project cost, which comprises parts and labor and is based on fair market value, and compared its value over time (error bars 
+    represent 95% confidence interval). Perhaps not surprisingly, we can see the effects of the global financial crisis reflected 
+    in these data. I was initially surprised by the optimistic suggestion that residential construction costs ~100K, on 
+    average, in Seattle, before realizing that this comparatively low cost was being driven by the large number of 
+    additions/alterations in the dataset and not new construction.   
+    </p>
+  </div>
+
+  <div class="entry">
+    <img src="residential_project_cost_new_construction.png" />
+    <p class="caption">
+    Filtering the dataset on new construction only reveals a more pessimistic, but believable, view of construction costs, which
+    unhappily for me (and unsurprisingly) appear to be increasing over time. 
+    </p>
+  </div>
+
+  <div class="entry">
+    <h3>Summary</h3>
+    <p>
+    Seattle seems to be a city where residential construction costs and residential density are both increasing, reflecting what
+    we already knew -- we live in a beautiful (and expensive) area, and we're not the only ones who want to live here. As for 
+    building my own home...at least I can expect the permit process to go relatively quickly! 
+    </p>
+  </div>
+</section>
+
+</div>
+</body>
+</html>
